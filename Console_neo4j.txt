@@ -1,0 +1,359 @@
+
+
+
+
+Query:
+CREATE (lde:Ingredient {nom: 'legume_de_saison', empreinte_carbone: 53.4}) 
+CREATE (hdo:Ingredient {nom: 'huile_d_olive', empreinte_carbone: 18.2}) 
+CREATE (pou:Ingredient {nom: 'poulet', empreinte_carbone: 774}) 
+CREATE (riz:Ingredient {nom: 'riz', empreinte_carbone: 84.6})
+CREATE (beu:Ingredient {nom: 'beurre', empreinte_carbone: 94.9}) 
+CREATE (fpm:Ingredient {nom: 'fromage_a_pate_molle', empreinte_carbone: 107}) 
+CREATE (fpd:Ingredient {nom: 'fromage_a_pate_dure', empreinte_carbone: 140}) 
+CREATE (pai:Ingredient {nom: 'pain', empreinte_carbone: 76}) 
+CREATE (yao:Ingredient {nom: 'yaourt', empreinte_carbone: 360}) 
+CREATE (con:Ingredient {nom: 'concombre', empreinte_carbone: 129}) 
+CREATE (bif:Ingredient {nom: 'bifteck', empreinte_carbone: 5370}) 
+CREATE (fri:Ingredient {nom: 'frite', empreinte_carbone: 260}) 
+CREATE (far:Ingredient {nom: 'farine', empreinte_carbone: 46.9}) 
+CREATE (poi:Ingredient {nom: 'poire', empreinte_carbone: 71}) 
+CREATE (huo:Ingredient {nom: 'huile', empreinte_carbone: 32.3}) 
+CREATE (deu:Ingredient {nom: 'deux_oeufs', empreinte_carbone: 276.7}) 
+CREATE (pom:Ingredient {nom: 'pomme_de_terre', empreinte_carbone: 15.5}) 
+CREATE (fra:Ingredient {nom: 'fruits_de_saison', empreinte_carbone: 53.4})
+CREATE (hdov:Ingredient {nom: 'huile_demi_cuil_vegan', empreinte_carbone: 17.1})
+CREATE (pai:Ingredient {nom: 'pain', empreinte_carbone: 76});
+
+Query took 19 ms and returned no rows. 
+Updated the graph - created 18 nodes set 36 properties 
+
+
+
+Query:
+CREATE (ome:Plat {nom: 'omelette_pomme_de_terre', empreinte_carbone: 309.3}) 
+CREATE (pou:Plat {nom: 'poulet_au_riz', empreinte_carbone: 952.1})
+ CREATE (bif:Plat {nom: 'bifteck_frite', empreinte_carbone: 5630});
+
+
+Query took 1 ms and returned no rows. 
+Updated the graph - created 3 nodes set 6 properties 
+
+
+
+Query:
+CREATE (lgg:Entree {nom: 'legumes_a_la_grecque', empreinte_carbone: 71.6}) 
+CREATE (tzt:Entree {nom: 'tzatziki', empreinte_carbone: 507.2}) 
+CREATE (sou:Entree {nom: 'soupe_de_legume', empreinte_carbone: 68.5});
+
+
+Query took 1 ms and returned no rows. 
+Updated the graph - created 3 nodes set 6 properties 
+
+
+
+Query:
+CREATE (pdf:Dessert {nom: 'plateau_de_fromage', empreinte_carbone: 323}) 
+CREATE (sdf:Dessert {nom: 'salade_de_fruit', empreinte_carbone: 129.4}) 
+CREATE (tpr:Dessert {nom: 'tarte_poire', empreinte_carbone: 153.1});
+
+
+Query took 0 ms and returned no rows. 
+Updated the graph - created 3 nodes set 6 properties 
+
+
+
+Query:
+CREATE (pdf:Dessert {nom: 'plateau_de_fromage', empreinte_carbone: 323}) 
+CREATE (sdf:Dessert {nom: 'salade_de_fruit', empreinte_carbone: 129.4}) 
+CREATE (tpr:Dessert {nom: 'tarte_poire', empreinte_carbone: 153.1});
+
+
+Query took 1 ms and returned no rows. 
+Updated the graph - created 3 nodes set 6 properties 
+ 
+
+Query:
+CREATE (rc:Repas {nom: 'repas_classique', total_empreinte_carbone: 1350}) 
+CREATE (rcb:Repas {nom: 'repas_classique_bis', total_empreinte_carbone: 6290}) 
+CREATE (rv:Repas {nom: 'repas_vegetarien', total_empreinte_carbone: 510});
+
+
+Query took 1 ms and returned no rows. 
+Updated the graph - created 3 nodes set 6 properties 
+
+
+----------------------------------------------------------Tables de liaison repas - plats
+Query:
+MATCH (r:Repas {nom: 'repas_classique'}) 
+MATCH (e:Entree {nom: 'legumes_a_la_grecque'}) 
+MATCH (p:Plat {nom: 'poulet_au_riz'}) 
+MATCH (d:Dessert {nom: 'plateau_de_fromage'})  
+CREATE (r)-[:COMPOSE]->(e) 
+CREATE (r)-[:COMPOSE]->(p) 
+CREATE (r)-[:COMPOSE]->(d);
+
+
+Query took 3 ms and returned no rows. 
+Updated the graph - created 6 relationships 
+
+
+
+Query:
+MATCH (r:Repas {nom: 'repas_classique_bis'}) 
+MATCH (e:Entree {nom: 'tzatziki'})
+ MATCH (p:Plat {nom: 'bifteck_frite'}) 
+MATCH (d:Dessert {nom: 'tarte_poire'})  
+CREATE (r)-[:COMPOSE]->(e) 
+CREATE (r)-[:COMPOSE]->(p) 
+CREATE (r)-[:COMPOSE]->(d);
+
+
+Query took 17 ms and returned no rows. 
+Updated the graph - created 6 relationships 
+
+
+
+Query:
+MATCH (r:Repas {nom: 'repas_vegetarien'}) 
+MATCH (e:Entree {nom: 'soupe_de_legume'}) 
+MATCH (p:Plat {nom: 'omelette_pomme_de_terre'}) 
+MATCH (d:Dessert {nom: 'salade_de_fruit'})  
+CREATE (r)-[:COMPOSE]->(e) 
+CREATE (r)-[:COMPOSE]->(p) 
+CREATE (r)-[:COMPOSE]->(d);
+
+
+Query took 17 ms and returned no rows. 
+Updated the graph - created 6 relationships 
+
+
+----------------------------------------------------------------------Tables de liaison plats-ingrédient
+Query:
+MATCH (p:Plat), (i:Ingredient) WHERE p.nom = 'omelette_pomme_de_terre' AND i.nom IN ['deux_oeufs', 'pomme_de_terre', 'huile_demi_cuil_vegan'] 
+CREATE (p)-[:CONTIENT]->(i);
+
+
+Query took 54 ms and returned no rows. 
+Updated the graph - created 3 relationships 
+
+
+
+Query:
+MATCH (p:Plat), (i:Ingredient) WHERE p.nom = 'poulet_au_riz' AND i.nom IN ['poulet', 'riz', 'beurre'] 
+CREATE (p)-[:CONTIENT]->(i);
+
+
+Query took 21 ms and returned no rows. 
+Updated the graph - created 3 relationships 
+
+
+
+Query:
+MATCH (p:Plat), (i:Ingredient) WHERE p.nom = 'bifteck_frite' AND i.nom IN ['bifteck', 'frite'] 
+CREATE (p)-[:CONTIENT]->(i);
+
+
+Query took 10 ms and returned no rows. 
+Updated the graph - created 2 relationships 
+
+
+
+
+Query:
+MATCH (d:Dessert), (i:Ingredient) WHERE d.nom = 'tarte_aux_poires' AND i.nom IN ['farine', 'poire', 'huile'] 
+CREATE (d)-[:CONTIENT]->(i);
+
+
+Query took 15 ms and returned no rows. 
+
+
+
+Query:
+MATCH (d:Dessert), (i:Ingredient) WHERE d.nom = 'tarte_poire' AND i.nom IN ['farine', 'poire', 'huile'] 
+CREATE (d)-[:CONTIENT]->(i);
+
+
+Query took 10 ms and returned no rows. 
+Updated the graph - created 6 relationships 
+
+
+
+Query:
+MATCH (d:Dessert), (i:Ingredient) WHERE d.nom = 'salade_de_fruit' AND i.nom IN ['fruits_de_saison', 'pain'] 
+CREATE (d)-[:CONTIENT]->(i)
+
+
+Query took 9 ms and returned no rows. 
+Updated the graph - created 6 relationships 
+
+
+
+Query:
+MATCH (d:Dessert), (i:Ingredient) WHERE d.nom = 'plateau_de_fromage' AND i.nom IN ['fromage_a_pate_molle', 'fromage_a_pate_dure', 'pain'] 
+CREATE (d)-[:CONTIENT]->(i);
+
+
+Query took 10 ms and returned no rows. 
+Updated the graph - created 8 relationships 
+
+
+
+Query:
+MATCH (e:Entree), (i:Ingredient) WHERE e.nom = 'legumes_a_la_grecque' AND i.nom IN ['legume_de_saison', 'huile_d_olive'] 
+CREATE (e)-[:CONTIENT]->(i)
+
+
+Query took 15 ms and returned no rows. 
+Updated the graph - created 2 relationships 
+
+
+
+Query:
+MATCH (e:Entree), (i:Ingredient) WHERE e.nom = 'tzatziki' AND i.nom IN ['yaourt', 'concombre', 'huile_d_olive'] 
+CREATE (e)-[:CONTIENT]->(i)
+
+
+Query took 9 ms and returned no rows. 
+Updated the graph - created 3 relationships 
+
+
+
+Query:
+MATCH (e:Entree), (i:Ingredient) WHERE e.nom = 'soupe_de_legume' AND i.nom IN ['legume_de_saison', 'huile_d_olive'] 
+CREATE (e)-[:CONTIENT]->(i)
+
+
+Query took 10 ms and returned no rows. 
+Updated the graph - created 2 relationships 
+
+
+--------------------------------------------------------------- Réponse aux question
+--- Question 1
+Query:
+MATCH (i:Ingredient {nom: 'riz'}) 
+RETURN i.empreinte_carbone;
+
+i.empreinte_carbone
+84.6
+
+Query took 6 ms and returned 1 rows. 
+
+
+----- Question 2 : 
+
+Query:
+MATCH (p:Plat {nom: 'poulet_au_riz'})-[:CONTIENT]->(i:Ingredient) 
+RETURN p.nom AS nom_plat, COLLECT(i.nom) AS ingredients, COLLECT(i.empreinte_carbone) AS empreinte_carbone_ingredients;
+
+nom_plat	ingredients	empreinte_carbone_ingredients
+poulet_au_riz	[riz, beurre, poulet]	[84.6, 94.9, 774]
+
+Query took 16 ms and returned 1 rows. 
+
+
+
+Query:
+MATCH (p:Plat {nom: 'omelette_pomme_de_terre'})-[:CONTIENT]->(i:Ingredient) 
+RETURN p.nom AS nom_plat, COLLECT(i.nom) AS ingredients, COLLECT(i.empreinte_carbone) AS empreinte_carbone_ingredients;
+
+nom_plat	ingredients	empreinte_carbone_ingredients
+omelette_pomme_de_terre	[pomme_de_terre, deux_oeufs, huile_demi_cuil_vegan]	[15.5, 276.7, 17.1]
+
+Query took 10 ms and returned 1 rows. 
+
+
+
+---- Question 3 : 
+
+Query:
+MATCH (m:Repas)-[:COMPOSE]->(p:Plat) OPTIONAL 
+MATCH (p)-[:CONTIENT]->(i:Ingredient) 
+RETURN m.nom AS nom_menu, p.nom AS nom_plat, p.empreinte_carbone AS empreinte_carbone_plat, COLLECT(i.nom) AS ingredients, COLLECT(i.empreinte_carbone) AS empreinte_carbone_ingredients;
+
+
+Query took 13 ms and returned no rows. 
+
+
+Query:
+MATCH (m:Repas {nom : 'repas_classique'} )-[:COMPOSE]->(p:Plat) OPTIONAL 
+MATCH (p)-[:CONTIENT]->(i:Ingredient) RETURN m.nom AS nom_menu, p.nom AS nom_plat, p.empreinte_carbone AS empreinte_carbone_plat, COLLECT(i.nom) AS ingredients, COLLECT(i.empreinte_carbone) AS empreinte_carbone_ingredients;
+
+nom_menu	nom_plat	empreinte_carbone_plat	ingredients	empreinte_carbone_ingredients
+repas_classique	poulet_au_riz	952.1	[riz, beurre, poulet, riz, beurre, poulet]	[84.6, 94.9, 774, 84.6, 94.9, 774]
+
+Query took 24 ms and returned 1 rows. 
+
+
+
+------- Question 4: 
+Query:
+MATCH (i:Ingredient {nom: 'riz'}) MATCH (p:Plat)-[:CONTIENT]->(i) RETURN p.nom AS nom_plat, p.empreinte_carbone AS empreinte_carbone_plat
+
+nom_plat	empreinte_carbone_plat
+poulet_au_riz	952.1
+
+Query took 9 ms and returned 1 rows. 
+
+
+
+Query:
+MATCH (m:Repas)-[:COMPOSE]->(p:Plat) OPTIONAL MATCH (p)-[:CONTIENT]->(i:Ingredient) RETURN m.nom AS nom_menu, p.nom AS nom_plat, p.empreinte_carbone AS empreinte_carbone_plat, COLLECT(i.nom) AS ingredients, COLLECT(i.empreinte_carbone) AS empreinte_carbone_ingredients;
+
+nom_menu	nom_plat	empreinte_carbone_plat	ingredients	empreinte_carbone_ingredients
+repas_vegetarien	omelette_pomme_de_terre	309.3	[pomme_de_terre, deux_oeufs, huile_demi_cuil_vegan, pomme_de_terre, deux_oeufs, huile_demi_cuil_vegan]	[15.5, 276.7, 17.1, 15.5, 276.7, 17.1]
+repas_classique	poulet_au_riz	952.1	[riz, beurre, poulet, riz, beurre, poulet]	[84.6, 94.9, 774, 84.6, 94.9, 774]
+repas_classique_bis	bifteck_frite	5630	[bifteck, frite, bifteck, frite]	[5370, 260, 5370, 260]
+
+Query took 14 ms and returned 3 rows. 
+
+
+------------------- Question 5 : 
+
+
+Query:
+MATCH (i:Ingredient) WHERE i.empreinte_carbone <= 50 
+RETURN i.empreinte_carbone AS ingredients;
+
+ingredients
+18.2
+46.9
+32.3
+15.5
+17.1
+
+Query took 12 ms and returned 5 rows. 
+
+
+
+Query:
+MATCH (p:Plat) WHERE p.empreinte_carbone <= 500  RETURN p.empreinte_carbone AS plats;
+
+plats
+309.3
+
+Query took 7 ms and returned 1 rows. 
+
+
+Query:
+MATCH (r:Repas) WHERE r.total_empreinte_carbone <= 550 RETURN r.total_empreinte_carbone AS repas;
+
+repas
+510
+
+Query took 7 ms and returned 1 rows. 
+
+
+
+Query:
+MATCH (i:Ingredient)  
+WHERE i.empreinte_carbone <= 50 WITH COLLECT(i) AS ingredients  
+MATCH (p:Plat) WHERE p.empreinte_carbone <= 500 WITH ingredients, COLLECT(p) AS plats  
+MATCH (m:Repas) WHERE m.total_empreinte_carbone <= 550 WITH ingredients, plats, COLLECT(m) AS menus  
+RETURN ingredients, plats, menus;
+
+ingredients	plats	menus
+[(1:Ingredient {empreinte_carbone:18.2, nom:"huile_d_olive"}), (20:Ingredient {empreinte_carbone:46.9, nom:"farine"}), (22:Ingredient {empreinte_carbone:32.3, nom:"huile"}), (24:Ingredient {empreinte_carbone:15.5, nom:"pomme_de_terre"}), (123:Ingredient {empreinte_carbone:17.1, nom:"huile_demi_cuil_vegan"})]	[(28:Plat {empreinte_carbone:309.3, nom:"omelette_pomme_de_terre"})]	[(106:Repas {nom:"repas_vegetarien", total_empreinte_carbone:510})]
+
+Query took 30 ms and returned 1 rows. 
+
+

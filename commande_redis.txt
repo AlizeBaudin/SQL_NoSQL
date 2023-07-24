@@ -1,0 +1,63 @@
+---------- Question 1 :
+MSET ingredient:yaourt 360 ingredient:concombre 129 ingredient:bifteck 5370 ingredient:frite 260 ingredient:farine 46.8 ingredient:poire 71
+MSET ingredient:huile_dolive_M1_M2 18.5 ingredient:legumes_saison 53.4 ingredient:poulet 774 ingredient:pain 76 ingrdient:riz 87.6
+MSET ingredient:beurre 94.9 ingredient:poulet 774 ingredient:fromage_molle 107 ingredient:fromage_dure 140
+MSET ingredient:huile_M3_entree 15.1 ingredient:deux_oeufs 276.7 ingredient:pomme_de_terre 15.5 ingredient:huile_M3_plat 17.1 ingredient:fruits_saison 53.4
+SET ingredient!huile_dessert_M2 32.2
+
+KEYS ingredient* 
+
+MGET ingredient:frmage_molle ingredient:fruits_saison ingredient:farine ingredient:riz ingredient:pain ingredient:beurre ingredient:fromage_dure
+ingredient:poirt ingredient:huile_dolive ingredient:concombre ingredient:poulet ingredient:huile_M3_entree ingredient:bifteck ingredient:pomme_de_terre
+ingredient:deux_oeufs ingredient:huile_dessert_M2 ingredient:huile_dolive_M1_M2 ingredient:yaourt ingredient:huile_M3_plat ingredient:legumes_saison
+ingredient:frite
+
+----- Question 2 :
+HMSET plat:poulet_au_riz empreinte_carbone 1350 ingredient:poulet 774 ingredient:riz 84.6 ingredient:beurre 94.9
+HMSET plat:bifteck_frite emprunte_carbone 5630 ingredient:bifteck 5370 ingredient:frite 260
+HMSET plat:omelette_pomme_de_terre empreinte_carbone 309.3 ingredient:deux_oeufs 276.7 ingredient:pomme_de_terre 15.5 ingredient:huileM3_plat 17.1
+HMSET entree:legumes_grecque empreinte_carbone 71.6 ingredient:legumes_saisons 53.4 ingredient:huile_dolive_M1_M2 18.2
+HMSET entree:tzatziki empreinte_carbone 507.2 ingredient:yaourt 360 ingredient:concombre 129 ingredient:huile_dolive_M1_M2 18.2
+HMSET entree:soupe_megume empreinte_carbone 68.5 ingredient:legumes_saison 53.4 ingredient:huile_M3_entree 15.1
+HMSET dessert:salade_fruit epreinte_carbone 129.4 ingredient:fruits_saison 53.4 ingredient:pain 76
+HMSET dessert:tarte_poires empreinte_carbone 153.1 ingredient:farine 46.5 ingredient:poire 71 ingredient:huile_dessert_M2 32.3
+HMSET dessert:plateau_fromage empreinte_carbone 323 ingredient:frmage_molle 107 ingredient:fromage_dure 140 ingredient:pain 76
+
+
+--- Question 3 
+LPUSH repas:classique plat:poulet_au_riz entree:legumes_grecque dessert:plateau_fromage
+LPUSH repas:vegeratien plat:omelette_pomme_de_terre entree:soupe_legume dessert:salade_fruit
+LPUSH repas:classique_bis plat:bifteck_frite entree:tzatziki dessert:tarte_poires
+
+KEYS repas*
+LRANGE repas:classique 0 -1
+
+HGETALL dessert:plateau_fromage
+
+--- Question 4 
+KEYS plat:*
+HGET plat:poulet_au_riz empreinte_carbone
+HGETALL plat:poulet_au_riz
+
+--Queston 5 :
+ZADD epreinte_carbone 1350 empreinte_carbone:poulet_au_riz 5630 empreinte_carbone:bifteck_frite 309.3 empreinte_carbone:omelette_pomme_de_terre
+
+ZRANGE empreinte_carbone 0 0 WITHSCORES
+
+ZADD empr_carb_dessert 323 empr_carb_dessert:plateauçfromage 153.1 empr_carb_dessert:tarte_poires 129.4 empr_carb_dessert:salade_fruit
+ZRANGE empr_carb_dessert 0 0 WITHSCORES
+
+ZADD empr_cab_entree 68.2 empr_carb_entree:soupe_legume 507.2 empr_carb_entree:tzatziki 71.6 empr_carb_entree:legume_grecque
+ZRANGE empr_carb_entree 0 0 WITHSCORE
+
+ZADD  empr_carb_ingredient 107 empr_carb_ingredient:fromage_molle 53.4 empr_carb_ingredient:fruits_saison 46.8 empr_carb_ingredient:farine 87.6 empr_carb_ingredient:riz
+76 empr_carb_ingredient:pain 94.9 empr_carb_ingredient:beurre 140 empr_carb_ingredient:frimage_dure 
+71 empr_carb_ingredient:poire 18.2 empr_carb_ingredient:huile_dolive 129 empr_carb_ingredient:concombre 774 empr_carb_ingredient:poulet
+15.1 empr_carp_ingredient:huile_M3_entree 5370 empr_carb_ingredient:bifteck 15.5 empr_carb_ingredient:pomme_de_terre 276.7 empr_carb_ingredient:deux_oeufs
+32.3 empr_carb_ingredient:huile_dessert_M2 18.5 empr_carb_ingredient:huile_dolive_M1_M2 360 empr_carb_ingredient:yaourt
+17.1 empr_carb_ingredient:huile_M3_plat 53.4 empr_carb_ingredient:legumes_saisons 260 empr_carb_ingredient:frite
+
+ZRANGE empr_carb_ingredient 0 0 WITHSCORES
+
+ZRANGEBYSCORE empr_carb_ingredient -inf 60
+

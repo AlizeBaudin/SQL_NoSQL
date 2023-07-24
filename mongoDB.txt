@@ -1,0 +1,274 @@
+
+db.ingredients.insertMany([
+   { nom: 'legume_de_saison', empreinte_carbone: 53.4 },
+   { nom: 'huile', empreinte_carbone: 18.2 },
+   { nom: 'poulet', empreinte_carbone: 774 },
+   { nom: 'riz', empreinte_carbone: 84.6 },
+   { nom: 'beurre', empreinte_carbone: 94.9 },
+   { nom: 'fromage_a_pate_molle', empreinte_carbone: 107 },
+   { nom: 'fromage_a_pate_dure', empreinte_carbone: 140 },
+   { nom: 'pain', empreinte_carbone: 76 },
+   { nom: 'yaourt', empreinte_carbone: 360 },
+   { nom: 'concombre', empreinte_carbone: 129 },
+   { nom: 'bifteck', empreinte_carbone: 5370 },
+   { nom: 'frite', empreinte_carbone: 260 },
+   { nom: 'farine', empreinte_carbone: 46.9 },
+   { nom: 'poire', empreinte_carbone: 71 },
+   { nom: 'huile_cuilleree', empreinte_carbone: 32.3 },
+   { nom: 'huile_demi_cuilleree', empreinte_carbone: 15.1 },
+   { nom: 'deux_oeufs', empreinte_carbone: 276.7 },
+   { nom: 'pomme_de_terre', empreinte_carbone: 15.5 },
+   { nom: 'huile_demi_cuil_vegan', empreinte_carbone: 17.1 },
+   { nom: 'fruits_saison', empreinte_carbone: 53.4 }
+]);
+
+db.plat.insertMany([
+   {
+      nom: "bifteck-frite",
+      ingredients: [
+         { nom: "bifteck", empreinte_carbone: 5370 },
+         { nom: "frite", empreinte_carbone: 260 }
+      ],
+      empreinte_carbone:5630
+   },
+   {
+      nom: "poulet au riz",
+      ingredients: [
+         { nom: "poulet", empreinte_carbone: 774 },
+         { nom: "riz", empreinte_carbone: 84.6 },
+         { nom: "beurre", empreinte_carbone: 94.9 }
+      ],
+      empreinte_carbone:953.5
+   },
+   {
+      nom: "omelette aux pomme de terre",
+      ingredients: [
+         { nom: "pomme_de_terre", empreinte_carbone: 276.7 },
+         { nom: "deux_oeufs", empreinte_carbone: 15.5 },
+         { nom: "huile_demi_cuil_vegan", empreinte_carbone: 17.1 }
+      ],
+      empreinte_carbone:309.3
+   }
+]);
+
+db.dessert.insertMany([
+   {
+      nom: "tarte aux poires",
+      ingredients: [
+         { nom: "farine", empreinte_carbone: 46.9 },
+         { nom: "poire", empreinte_carbone: 71 },
+         { nom: "huile (1 cuillère)", empreinte_carbone: 32.3 }
+      ],
+      empreinte_carbone:105.2
+   },
+   {
+      nom: "plateau de fromage",
+      ingredients: [
+         { nom: "fromage à pâte molle", empreinte_carbone: 107 },
+         { nom: "fromage à pâte dure", empreinte_carbone: 140 },
+         { nom: "pain", empreinte_carbone: 76 }
+      ],
+      empreinte_carbone:323
+   },
+   {
+      nom: "salade de fruits",
+      ingredients: [
+         { nom: "fruits de saison", empreinte_carbone: 53.4 },
+         { nom: "pain", empreinte_carbone: 76 }
+      ],
+      empreinte_carbone:129.4
+   }
+]);
+
+db.entree.insertMany([
+   {
+      nom: "légumes à la grecque",
+      ingredients: [
+         { nom: "légume de saison", empreinte_carbone: 53.4 },
+         { nom: "huile d'olive (1/2 cuillérée)", empreinte_carbone: 18.2 }
+      ],
+      empreinte_carbone:71.6
+   },
+   {
+      nom: "tzatziki",
+      ingredients: [
+         { nom: "yaourt", empreinte_carbone: 360 },
+         { nom: "concombre", empreinte_carbone: 129 },
+         { nom: "huile d'olive (1/2 cuillérée)", empreinte_carbone: 18.2 }
+      ],
+      empreinte_carbone:507.2
+   },
+   {
+      nom: "soupe de légumes",
+      ingredients: [
+         { nom: "légume de saison", empreinte_carbone: 53.4 },
+         { nom: "huile ½ cuillérée", empreinte_carbone: 15.1 }
+      ],
+      empreinte_carbone:68.5
+   }
+]);
+
+// Création de la collection "repas"
+db.repas.insertMany([
+   {
+      nom: "repas classique",
+      entree: {
+         nom: "légumes à la grecque",
+         ingredients: [
+            { nom: "légume de saison", empreinte_carbone: 53.4 },
+            { nom: "huile d'olive (1/2 cuillérée)", empreinte_carbone: 18.2 }
+         ]
+      },
+      plat: {
+         nom: "poulet au riz",
+         ingredients: [
+            { nom: "poulet", empreinte_carbone: 774 },
+            { nom: "riz", empreinte_carbone: 84.6 },
+            { nom: "beurre", empreinte_carbone: 94.9 }
+         ]
+      },
+      dessert: {
+         nom: "plateau de fromage",
+         ingredients: [
+            { nom: "fromage à pâte molle", empreinte_carbone: 107 },
+            { nom: "fromage à pâte dure", empreinte_carbone: 140 },
+            { nom: "pain", empreinte_carbone: 76 }
+         ]
+      },
+      total_carbone: 1350
+   },
+   {
+      nom: "repas classique bis",
+      entree: {
+         nom: "tzatziki",
+         ingredients: [
+            { nom: "yaourt", empreinte_carbone: 360 },
+            { nom: "concombre", empreinte_carbone: 129 },
+            { nom: "huile d'olive (1/2 cuillérée)", empreinte_carbone: 18.2 }
+         ]
+      },
+      plat: {
+         nom: "bifteck-frite",
+         ingredients: [
+            { nom: "bifteck", empreinte_carbone: 5370 },
+            { nom: "frite", empreinte_carbone: 260 }
+         ]
+      },
+      dessert: {
+         nom: "tarte aux poires",
+         ingredients: [
+            { nom: "farine", empreinte_carbone: 46.9 },
+            { nom: "poire", empreinte_carbone: 71 },
+            { nom: "huile (1 cuillère)", empreinte_carbone: 32.3 }
+         ]
+      },
+      total_carbone: 6290
+   },
+   {
+      nom: "repas végétarien",
+      entree: {
+         nom: "soupe de légumes",
+         ingredients: [
+            { nom: "légume de saison", empreinte_carbone: 53.4 },
+            { nom: "huile ½ cuillérée", empreinte_carbone: 15.1 }
+         ]
+      },
+      plat: {
+         nom: "omelette aux pommes de terre",
+         ingredients: [
+            { nom: "deux œufs", empreinte_carbone: 276.7 },
+            { nom: "pomme de terre", empreinte_carbone: 15.5 },
+            { nom: "huile ½ cuillérée", empreinte_carbone: 17.1 }
+         ]
+      },
+      dessert: {
+        nom: "salade de fruits",
+        ingredients: [
+            { nom: "fruits de saison", empreinte_carbone: 53.4 },
+            { nom: "pain", empreinte_carbone: 76 }
+        ]
+      },
+      total_carbone: 510
+    }
+]);        
+
+
+/// les requêtes 
+// Question 1 : Recherche de l'empreinte carbone de l'ingrédient "riz"
+db.ingredients.findOne({ nom: "riz" }).empreinte_carbone;
+
+// Question 2 : Recherche de l'empreinte carbone du plat "poulet au riz" et de ses ingrédients
+const plat = db.plat.findOne({ nom: "poulet au riz" });
+const empreinteCarbone = plat.empreinte_carbone;
+const ingredients = plat.ingredients.map(ingredients => {
+   const ingredientDetails = db.ingredients.findOne({ nom: ingredients.nom });
+   return {
+      nom: ingredientDetails.nom,
+      empreinte_carbone: ingredients.empreinte_carbone
+   };
+});
+
+// Affichage des résultats
+print("Empreinte carbone du plat : " + empreinteCarbone);
+print("Ingrédients du plat :");
+ingredients.forEach(ingredients => {
+   print("- " + ingredients.nom + " : " + ingredients.empreinte_carbone);
+});
+
+// Question 3 : Recherche de la composition et de l'empreinte carbone des plats du repas "repas classique"
+const repas = db.repas.findOne({ nom: "repas classique" });
+
+repas.plat.ingredients.forEach(ingredients => {
+   const ingredientDetails_2 = db.ingredients.findOne({ nom: ingredients.nom });
+   ingredients.empreinte_carbone = ingredientDetails_2.empreinte_carbone;
+});
+
+// Affichage des résultats
+print("Composition et empreinte carbone des plats :");
+repas.plat.ingredients.forEach(ingredients => {
+   print("- " + ingredients.nom + " : " + ingredients.empreinte_carbone);
+});
+
+print("Empreinte carbone totale du repas : " + repas.total_carbone);
+
+// Question 4 : Recherche des plats contenant l'ingrédient "riz" avec leur empreinte carbone
+const ingredient = "riz";
+const plats = db.plat.find({ "ingredients.nom" : ingredient },
+{ nom: 1, empreinte_carbone: 1 });
+
+// Affichage des résultats
+print("Plats contenant l'ingrédient '" + ingredient + "' :");
+plats.forEach(plat => {
+   print("- " + plat.nom + " : " + plat.empreinte_carbone);
+});
+
+
+
+// Question 5 : Recherche des ingrédients, plats ou menus ayant une empreinte carbone inférieure à 100
+const seuil1 = 50;
+const seuil2 = 500;
+const seuil3 = 550;
+// Recherche des ingrédients
+const ingredients_2 = db.ingredients.find({ empreinte_carbone: { $lt: seuil1 } }, { nom: 1, empreinte_carbone: 1 });
+// Recherche des plats
+const plats_2 = db.plat.find({ empreinte_carbone: { $lt: seuil2 } }, { nom: 1, empreinte_carbone: 1 });
+// Recherche des menus
+const menus = db.repas.find({ total_carbone: { $lt: seuil3 } }, { nom: 1, total_carbone: 1 });
+// Affichage des résultats
+print("Ingrédients ayant une empreinte carbone inférieure à " + seuil1 + " :");
+ingredients_2.forEach(ingredients => {
+   print("- " + ingredients.nom + " : " + ingredients.empreinte_carbone);
+});
+
+print("Plats ayant une empreinte carbone inférieure à " + seuil2 + " :");
+plats_2.forEach(plat => {
+   print("- " + plat.nom + " : " + plat.empreinte_carbone);
+});
+
+print("Menus ayant une empreinte carbone inférieure à " + seuil3 + " :");
+menus.forEach(menu => {
+   print("- " + menu.nom + " : " + menu.total_carbone);
+});
+
+
+

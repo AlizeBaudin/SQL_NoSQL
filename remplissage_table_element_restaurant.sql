@@ -1,0 +1,163 @@
+-- insertion des ingredients 
+INSERT INTO ingredients (nom, empreinte_carbone)
+VALUES
+  ('legume_de_saison', 53.4),
+  ('huile', 18.2),
+  ('poulet', 774),
+  ('riz', 84.6),
+  ('beurre', 94.9),
+  ('fromage_a_pate_molle', 107),
+  ('fromage_a_pate_dure', 140),
+  ('pain', 76),
+  ('yaourt', 360),
+  ('concombre', 129),
+  ('bifteck', 5370),
+  ('frite', 260),
+  ('farine', 46.9),
+  ('poire', 71),
+  ('huile_cuilleree', 32.3),
+  ('huile_demi_cuilleree', 15.1),
+  ('deux_oeufs', 276.7), 
+  ('pomme_de_terre',15.5), 
+  ('huile_demi_cuil_vegan', 17.1),
+  ('fruits_saison', 53.4);
+  
+
+-- Entrées :
+INSERT INTO entree (id, nom, empreinte_carbone)
+VALUES (11,'legumes_a_la_grecque', 71.6);
+INSERT INTO entree (id, nom, empreinte_carbone)
+VALUES (21,'tzatziki', 507.2);
+INSERT INTO entree (id, nom, empreinte_carbone)
+VALUES (31,'soupe_de_legume', 68.5);
+
+INSERT INTO entree_ingredients (plat_id, ingredient_nom)
+VALUES
+  (21, 'legume_de_saison'),
+  (21, 'huile'),
+  (11, 'legume_de_saison'),
+  (11, 'huile_demi_cuilleree'),
+  (31, 'yaourt'),
+  (31, 'concombre'),
+  (31, 'huile');
+
+
+-- Plat principal : 
+INSERT INTO plats (id, nom, empreinte_carbone)
+VALUES 
+	(12,'omelette_pomme_de_terre', 309.3),
+	(22,'poulet_au_riz', 952.1),
+	(32,'poulet_au_riz', 5630);
+
+UPDATE plats
+SET nom = 'bifteck_frite'
+WHERE id = 32;
+
+INSERT INTO plats_ingredients (plat_id, ingredient_nom)
+VALUES
+  (22, 'poulet'),
+  (22, 'riz'),
+  (22, 'beurre'),
+  (12, 'deux_oeufs'),
+  (12, 'pomme_de_terre'),
+  (12, 'huile_demi_cuil_vegan'),
+  (32, 'bifteck'),
+  (32, 'frite');
+  
+-- Desserts :
+INSERT INTO dessert (id, nom, empreinte_carbone)
+VALUES 
+	(23, 'plateau_de_fromage', 323),
+	(13, 'salade_de_fruit', 129.4),
+	(33, 'tarte_poire',153.1);
+
+INSERT INTO dessert_ingredients (plat_id, ingredient_nom)
+VALUES
+  (23, 'fromage_a_pate_molle'),
+  (23, 'fromage_a_pate_dure'),
+  (23, 'pain'),
+  (13, 'fruits_saison'),
+  (13, 'pain'),
+  (33, 'farine'),
+  (33, 'poire'),
+  (33, 'huile_cuilleree');
+
+
+-- Repas 
+INSERT INTO repas (id, nom, total_empreinte_carbone)
+VALUES 
+	(1, 'repas_vegetarien', 510),
+	(2, 'repas_classique',1350),
+	(3, 'repas_classique_bis',6290);
+
+INSERT INTO repas_entree_plat_dessert (repas_id, plat_id, dessert_id, entree_id)
+VALUES
+  (1, 12,13,11), -- repas_végétarien et ses plats
+  (2, 22,23,21), -- repas classique et ses plats
+  (3, 32,33,31); -- repas classique bis et ses plats
+  
+  
+---- les requêtes -----
+
+--------- Question 1 :
+SELECT empreinte_carbone
+FROM ingredients;
+-- pour un ingrédient donnée
+EXPLAIN SELECT empreinte_carbone
+FROM ingredients
+WHERE nom='poire';
+
+
+-------- Question 2 :
+EXPLAIN ANALYSE SELECT plats.nom AS nom_plat, plats.empreinte_carbone, ingredients.nom AS nom_ingredient, ingredients.empreinte_carbone
+FROM plats
+JOIN plats_ingredients ON plats.id = plats_ingredients.plat_id
+JOIN ingredients ON plats_ingredients.ingredient_nom = ingredients.nom
+WHERE plats.nom = 'omelette_pomme_de_terre';
+
+
+----- Question 3 : 
+EXPLAIN ANALYSE SELECT repas.nom AS nom_repas, 
+	   plats.nom AS nom_plat, plats.empreinte_carbone 
+FROM repas_entree_plat_dessert AS rp
+JOIN repas  ON repas.id = rp.repas_id
+JOIN plats  ON plats.id = rp.plat_id;	   
+
+
+
+-- Question 4: Plats contenant un ingrédient donné
+SELECT plats.nom AS nom_plat, plats.empreinte_carbone
+FROM plats 
+JOIN plats_ingredients ON plats_ingredients.plat_id = plats.id
+JOIN ingredients ON ingredients.nom = plats_ingredients.ingredient_nom
+WHERE ingredients.nom = 'frite';
+
+-- Question 5: Ingrédients, plats ou menus ayant la plus faible empreinte carbone ou une empreinte inférieure à un seuil donné
+EXPLAIN ANALYZE SELECT ingredients.nom AS nom_ingredients, ingredients.empreinte_carbone, 'ingredient' AS type
+FROM ingredients 
+WHERE ingredients.empreinte_carbone < 50
+UNION ALL
+SELECT plats.nom AS nom_plat, plats.empreinte_carbone, 'plat' AS type
+FROM plats 
+WHERE plats.empreinte_carbone < 500
+UNION ALL
+SELECT repas.nom AS menu, repas.total_empreinte_carbone, 'menu' AS type
+FROM repas
+WHERE repas.total_empreinte_carbone < 550;
+-- ORDER BY empreinte_carbone;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
